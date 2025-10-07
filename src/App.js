@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 
 const faqs = [
@@ -24,5 +25,36 @@ export default function App() {
 }
 
 function Accordion() {
-  return <div>TODO</div>;
+  const [curOpen, setCurOpen] = useState();
+
+  const handleOpen = function (num) {
+    setCurOpen(curOpen === num ? null : num);
+  };
+  return (
+    <div className="accordion">
+      {faqs.map((faq, i) => (
+        <AccordionItem
+          key={i}
+          title={faq.title}
+          text={faq.text}
+          num={i}
+          curOpen={curOpen}
+          handleOpen={handleOpen}
+        />
+      ))}
+    </div>
+  );
+}
+function AccordionItem({ title, text, num, curOpen, handleOpen }) {
+  return (
+    <div
+      className={`item ${curOpen === num && "open"}`}
+      onClick={() => handleOpen(num)}
+    >
+      <p className="number">{num + 1}</p>
+      <p className="title">{title}</p>
+      <p className="icon">{curOpen === num ? "-" : "+"}</p>
+      <p className="content-box">{curOpen === num && text}</p>
+    </div>
+  );
 }
