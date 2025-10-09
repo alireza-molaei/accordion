@@ -19,12 +19,11 @@ const faqs = [
 export default function App() {
   return (
     <div>
-      <Accordion />
+      <Accordion data={faqs} />
     </div>
   );
 }
-
-function Accordion() {
+function Accordion({ data }) {
   const [curOpen, setCurOpen] = useState();
 
   const handleOpen = function (num) {
@@ -32,20 +31,21 @@ function Accordion() {
   };
   return (
     <div className="accordion">
-      {faqs.map((faq, i) => (
+      {data.map((faq, i) => (
         <AccordionItem
           key={i}
           title={faq.title}
-          text={faq.text}
           num={i}
           curOpen={curOpen}
           handleOpen={handleOpen}
-        />
+        >
+          {faq.text}
+        </AccordionItem>
       ))}
     </div>
   );
 }
-function AccordionItem({ title, text, num, curOpen, handleOpen }) {
+function AccordionItem({ title, children, num, curOpen, handleOpen }) {
   return (
     <div
       className={`item ${curOpen === num && "open"}`}
@@ -54,7 +54,7 @@ function AccordionItem({ title, text, num, curOpen, handleOpen }) {
       <p className="number">{num + 1}</p>
       <p className="title">{title}</p>
       <p className="icon">{curOpen === num ? "-" : "+"}</p>
-      <p className="content-box">{curOpen === num && text}</p>
+      {curOpen === num && <p className="content-box"> {children}</p>}
     </div>
   );
 }
